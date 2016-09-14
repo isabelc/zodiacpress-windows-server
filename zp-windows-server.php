@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Plugin Name: ZodiacPress Windows Server
 Plugin URI: https://cosmicplugins.com/downloads/zodiacpress-windows-server/
 Description: Make ZodiacPress and other astrology plugins work on sites that use Windows hosting.
@@ -27,7 +27,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with ZodiacPress Windows Server. If not, see <http://www.gnu.org/licenses/>.
-
 */
 
 if ( ! defined( 'ZP_WINDOWS_SERVER_PATH' ) ) {
