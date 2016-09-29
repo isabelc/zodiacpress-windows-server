@@ -3,7 +3,7 @@
 Plugin Name: ZodiacPress Windows Server
 Plugin URI: https://cosmicplugins.com/downloads/zodiacpress-windows-server/
 Description: Make ZodiacPress and other astrology plugins work on sites that use Windows hosting.
-Version: 1.0
+Version: 1.2
 Author:	Isabel Castillo
 Author URI:	http://isabelcastillo.com
 License: GNU GPLv2
@@ -28,6 +28,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ZodiacPress Windows Server. If not, see <http://www.gnu.org/licenses/>.
 */
+
+if ( class_exists( 'ZP_License' ) && is_admin() ) {
+	$zpws_license = new ZP_License( __FILE__, 'ZodiacPress Windows Server', '1.2', 'Isabel Castillo' );// @todo update v
+}
 
 if ( ! defined( 'ZP_WINDOWS_SERVER_PATH' ) ) {
 	define( 'ZP_WINDOWS_SERVER_PATH', plugin_dir_path( __FILE__ ) );
@@ -61,5 +65,65 @@ if ( defined( 'ZODIACPRESS_PATH' ) && function_exists( 'zp_is_server_windows') )
 
 		return $sweph_dir . $swetest;
 	}
+}
+
+// Activate free license for security and maintenance updates
+function zpws_activate_free_updates() {
+
+	$zp_options = get_option( 'zodiacpress_settings' );
+	$zp_options['zodiacpress_windows_server_license_key'] = 'lKnhd8GdFeOei823bdhd73';
+	update_option( 'zodiacpress_settings', $zp_options );
+
+	$api_params = array(
+		'edd_action' => 'activate_license',
+		'license'    => 'lKnhd8GdFeOei823bdhd73',
+		'item_name'  => urlencode( 'ZodiacPress Windows Server' ),
+		'url'        => home_url()
+	);
+
+	$response = wp_remote_post(
+		'https://cosmicplugins.com',
+		array(
+			'timeout'   => 15,
+			'sslverify' => false,
+			'body'      => $api_params
+		)
+	);
+
+	// Make sure there are no errors
+	if ( is_wp_error( $response ) ) {
+		return;
+	}
+
+	set_site_transient( 'update_plugins', null );
+	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+	update_option( 'zodiacpress_windows_server_license_active', $license_data );
 
 }
+// Deactivate license when deactivating plugin
+function zpws_deactivate_free_updates() {
+
+	$api_params = array(
+		'edd_action' => 'deactivate_license',
+		'license'    => 'lKnhd8GdFeOei823bdhd73',
+		'item_name'  => urlencode( 'ZodiacPress Windows Server' ),
+		'url'        => home_url()
+	);
+
+	$response = wp_remote_post(
+		'https://cosmicplugins.com',
+		array(
+			'timeout'   => 15,
+			'sslverify' => false,
+			'body'      => $api_params
+		)
+	);
+
+	$zp_options = get_option( 'zodiacpress_settings' );
+	unset( $zp_options['zodiacpress_windows_server_license_key'] );
+	update_option( 'zodiacpress_settings', $zp_options );
+	delete_option( 'zodiacpress_windows_server_license_active' );
+
+}
+register_activation_hook( __FILE__, 'zpws_activate_free_updates' );
+register_deactivation_hook( __FILE__, 'zpws_deactivate_free_updates' );
