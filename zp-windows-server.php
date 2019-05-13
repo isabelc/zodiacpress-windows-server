@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: ZodiacPress Windows Server
-Plugin URI: https://cosmicplugins.com/downloads/zodiacpress-windows-server/
+Plugin URI: https://isabelcastillo.com/free-plugins/zodiacpress-windows-server
 Description: Make ZodiacPress and other astrology plugins work on sites that use Windows hosting.
 Version: 1.2.1
 Author:	Isabel Castillo
@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: zp-windows-server
 Domain Path: languages
 
-Copyright 2106 Isabel Castillo
+Copyright 2106-2019 Isabel Castillo
 
 This file is part of ZodiacPress Windows Server.
 
