@@ -28,19 +28,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ZodiacPress Windows Server. If not, see <http://www.gnu.org/licenses/>.
 */
-
-if ( class_exists( 'ZP_License' ) && is_admin() ) {
-	$zpws_license = new ZP_License( __FILE__, 'ZodiacPress Windows Server', '1.2.1', 'Isabel Castillo' );// @todo update v
-}
-
 if ( ! defined( 'ZP_WINDOWS_SERVER_PATH' ) ) {
 	define( 'ZP_WINDOWS_SERVER_PATH', plugin_dir_path( __FILE__ ) );
 }
-
 if ( defined( 'ZODIACPRESS_PATH' ) && function_exists( 'zp_is_server_windows') ) {
-
 	if ( zp_is_server_windows() ) {
-
 		add_filter( 'zp_sweph_dir', 'zpws_sweph_dir' );
 		add_filter( 'zp_sweph_file', 'zpws_sweph_file' );
 	}
